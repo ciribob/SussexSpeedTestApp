@@ -2,15 +2,8 @@ package com.sussex.foss.unispeedtest;
 
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-
-import com.sussex.foss.unispeedtest.R;
 
 /**
  * 
@@ -18,6 +11,7 @@ import com.sussex.foss.unispeedtest.R;
  */
 public class SpeedTestPreferences extends PreferenceActivity
 {
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{

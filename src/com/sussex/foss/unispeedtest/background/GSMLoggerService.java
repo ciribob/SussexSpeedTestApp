@@ -1,13 +1,10 @@
 package com.sussex.foss.unispeedtest.background;
 
-import com.sussex.foss.unispeedtest.MainActivity;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.telephony.PhoneStateListener;
@@ -15,11 +12,12 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.sussex.foss.unispeedtest.MainActivity;
+
 public class GSMLoggerService extends Service {
 
 	private TelephonyManager telephonyManager;
 	private PowerManager.WakeLock mWakeLock;
-	private Handler mHandler;
 
 	private int gsmSignalStrength = -1;
 	private int gsmErrorRate = -1;
