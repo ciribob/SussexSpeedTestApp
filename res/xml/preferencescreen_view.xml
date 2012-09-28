@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory android:title="NickName">
+	    <EditTextPreference 
+	        android:key="PREF_NICKNAME"
+			android:title="Device NickName"
+			android:defaultValue="Unknown" />
+	</PreferenceCategory>
+	
+	<PreferenceCategory android:title="Intervals">
+	    
+	    <EditTextPreference 
+	        android:key="PREF_WAIT_FOR_LOCATION_TIME"
+			android:title="Location Timer (Seconds)"
+			 android:summary="Time in seconds to wait for a location update before carrying out speed test "
+			android:defaultValue="30"
+			android:inputType="numberDecimal"
+			 />
+	    <EditTextPreference 
+	        android:key="PREF_TEST_INTERVAL"
+			android:title="Test Interval Seconds"
+			android:summary="Time between speed tests.
+			 The event will be fired every two minutes but the previous test may have completed less than two minutes ago"
+			 android:inputType="numberDecimal"
+			android:defaultValue="120"
+			 />
+	</PreferenceCategory>
+</PreferenceScreen>

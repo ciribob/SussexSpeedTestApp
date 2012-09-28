@@ -1,0 +1,75 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="Service Status:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:onClick="checkServiceStatus" />
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:text="Not Running"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/red"
+        android:onClick="checkServiceStatus" />
+
+    <Button
+        android:id="@+id/startServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/status"
+        android:onClick="startBackgroundService"
+        android:text="Start Service" />
+
+    <Button
+        android:id="@+id/stopServiceButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/startServiceButton"
+        android:layout_marginTop="77dp"
+        android:onClick="stopBackgroundService"
+        android:text="Stop Service" />
+
+    <Button
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/startServiceButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="openPreferencesPanel"
+        android:text="Settings" />
+
+    <Button
+        android:id="@+id/emptyDBButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/stopServiceButton"
+        android:layout_alignBottom="@+id/stopServiceButton"
+        android:layout_alignParentRight="true"
+        android:onClick="emptyDatabase"
+        android:text="Empty DB" />
+
+    <Button
+        android:id="@+id/exportButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/settings"
+        android:layout_alignParentRight="true"
+        android:onClick="exportToCSV"
+        android:text="Export to CSV" />
+
+</RelativeLayout>
