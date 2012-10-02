@@ -149,7 +149,7 @@ public class Api {
 
 			// write headers
 			writer.write("Device Nick Name:"+nickName+" \n ");
-			writer.write("Timestamp (ms), Lat, Lon, Accuracy, Rx, Tx, Time,Signal Type, Signal Strength, Battery,Request Size\n ");
+			writer.write("Timestamp (ms), Lat, Lon, Accuracy, Rx, Tx, Time,Signal Type, Signal Strength, Battery,Request Size, RTT\n ");
 
 			if (tests.moveToFirst()) {
 				// using string builder means we dont have to keep converting
@@ -174,6 +174,8 @@ public class Api {
 					line.append(tests.getInt(count++));
 					line.append(",");
 					line.append(tests.getString(count++));
+					line.append(",");
+					line.append(tests.getInt(count++));
 					line.append(",");
 					line.append(tests.getInt(count++));
 					line.append(",");

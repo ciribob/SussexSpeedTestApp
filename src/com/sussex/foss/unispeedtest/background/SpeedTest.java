@@ -47,50 +47,53 @@ public class SpeedTest {
 			test.setAccuracy(location.getAccuracy());
 
 		}
-		
+
 		test.setRequestSize(requestSize);
 	}
 
 	public void runSpeedTest() {
 		// get network details
 		getNetworkInfo();
+		getRTT();
 		speedTest();
 		storeSpeedTest();
 
 	}
 
 	private void speedTest() {
-		
+
 		long rXBytes = TrafficStats.getUidRxBytes(android.os.Process.myUid());
 		long tXBytes = TrafficStats.getUidTxBytes(android.os.Process.myUid());
 
-		
-
 		if (Api.isNetworkAvailable(context)) {
-			
-			String url = "http://www.sussex.ac.uk/Users/ianw/digitalStadium/speedtest.php?downloadsize="+test.getRequestSize()+"&random="
-					+ System.nanoTime(); // add on the end to stop caching
-			
-			//do it a better way with sockets for more accurate??
-			
+
+			String url = "http://www.sussex.ac.uk/Users/ianw/digitalStadium/speedtest.php?downloadsize="
+					+ test.getRequestSize() + "&random=" + System.nanoTime(); // add
+																				// on
+																				// the
+																				// end
+																				// to
+																				// stop
+																				// caching
+
+			// do it a better way with sockets for more accurate??
+
 			HttpGet httpGet = new HttpGet(url);
 			HttpClient httpClient = new DefaultHttpClient();
-			
-			
+
 			try {
-				//Start time
+				// Start time
 				long timer = System.currentTimeMillis();
-				//execute request
+				// execute request
 				HttpResponse response = httpClient.execute(httpGet);
-				
-				
+
 				StatusLine statusLine = response.getStatusLine();
-				
+
 				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-					
-					//save time only if request worked
+
+					// save time only if request worked
 					test.setTime((int) (System.currentTimeMillis() - timer));
-					
+
 					HttpEntity entity = response.getEntity();
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					entity.writeTo(out);
@@ -114,14 +117,12 @@ public class SpeedTest {
 				// handle exception
 				Log.e(MainActivity.LOG_NAME, e.getMessage());
 			}
-			
-			
 
 		} else {
 
 			Log.d(MainActivity.LOG_NAME,
 					"Speed Test fAiled, no internet connection");
-			
+
 			test.setTime(0);
 
 		}
@@ -134,7 +135,78 @@ public class SpeedTest {
 		test.setSent((int) (TrafficStats.getUidTxBytes(android.os.Process
 				.myUid()) - tXBytes));
 
-		
+	}
+
+	public void getRTT() {
+		if (Api.isNetworkAvailable(context)) {
+
+			String url = "http://www.sussex.ac.uk/Users/ianw/digitalStadium/speedtest.php?gettime=1&random=" + System.nanoTime(); 
+																				// add
+																				// on
+																				// the
+																				// end
+																				// to
+																				// stop
+																				// caching
+
+			HttpGet httpGet = new HttpGet(url);
+			HttpClient httpClient = new DefaultHttpClient();
+
+			try {
+			
+				long sentTime = System.currentTimeMillis();
+				// execute request
+				HttpResponse response = httpClient.execute(httpGet);
+				
+				long receiveTime = System.currentTimeMillis();
+
+				StatusLine statusLine = response.getStatusLine();
+
+				if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+					HttpEntity entity = response.getEntity();
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					entity.writeTo(out);
+					out.close();
+					
+					//get RTT by calculating difference in clocks
+					long webTime = (long) (Double.parseDouble(out.toString().trim())* (double)1000);
+					
+					
+					
+					long totalToSend = webTime - sentTime;
+					
+					long totalToReceive = receiveTime - webTime;
+					
+					test.setRtt((int)(totalToSend +totalToReceive)); 
+
+					// received
+					// Log.d(MainActivity.LOG_NAME, out.toString());
+
+					Log.d(MainActivity.LOG_NAME, "Calculated RTT. StartTime: "+sentTime+" WebTime: "+webTime+" Sending Time: "+totalToSend+ " Receive Time:"+totalToReceive+" TOTAL:"+test.getRtt() );
+
+				} else {
+					// handle bad response
+					Log.e(MainActivity.LOG_NAME,
+							"BAD RESPONSE: " + statusLine.getStatusCode());
+					
+					Log.d(MainActivity.LOG_NAME, "Failed to Calculate RTT");
+
+				}
+			} catch (ClientProtocolException e) {
+				// handle exception
+				Log.e(MainActivity.LOG_NAME, e.getMessage());
+			} catch (IOException e) {
+				// handle exception
+				Log.e(MainActivity.LOG_NAME, e.getMessage());
+			}
+
+		} else {
+
+			Log.d(MainActivity.LOG_NAME,
+					"RTT Test fAiled, no internet connection");
+		}
+
+
 
 	}
 
@@ -153,7 +225,12 @@ public class SpeedTest {
 
 		if (networkInfo != null) {
 
-			if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE) {
+			// possible fix for ians phone always thinking it was on wifi??
+			if (networkInfo.getType() == ConnectivityManager.TYPE_MOBILE
+					|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE_DUN
+					|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE_HIPRI
+					|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE_MMS
+					|| networkInfo.getType() == ConnectivityManager.TYPE_MOBILE_SUPL) {
 
 				// its a mobile connection but what kind...
 				TelephonyManager tel = (TelephonyManager) context
@@ -223,9 +300,8 @@ public class SpeedTest {
 			test.setSignalType("NONE");
 		}
 	}
-	
-	public SpeedTestResult getTestResult()
-	{
+
+	public SpeedTestResult getTestResult() {
 		return this.test;
 	}
 

@@ -18,6 +18,8 @@ public class SpeedTestResult {
 	private int battery;
 	
 	private int requestSize;
+	
+	private int rtt=0; //round trip time
 
 	public double getLat() {
 		return lat;
@@ -107,7 +109,13 @@ public class SpeedTestResult {
 		this.requestSize = requestSize;
 	}
 	
+	public int getRtt() {
+		return rtt;
+	}
 	
+	public void setRtt(int rtt) {
+		this.rtt = rtt;
+	}
 	
 	
 

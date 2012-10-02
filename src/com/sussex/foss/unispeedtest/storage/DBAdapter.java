@@ -21,7 +21,7 @@ import com.sussex.foss.unispeedtest.MainActivity;
 public class DBAdapter {
 
 	private static final String DATABASE_NAME = "speedTest.db";
-	private static final int DATABASE_VERSION = 3; // needs to be incremented if
+	private static final int DATABASE_VERSION = 4; // needs to be incremented if
 													// database
 													// structure changes to drop
 													// existing DB on users
@@ -43,6 +43,8 @@ public class DBAdapter {
 	public static final String TEST_BATTERY = "battery";
 	
 	public static final String TEST_REQUEST = "request";
+	
+	public static final String TEST_RTT = "rtt";
 
 	private SQLiteDatabase db; // the database
 	private final Context context;
@@ -101,6 +103,7 @@ public class DBAdapter {
 		insertResult.put(TEST_SIGNAL_STRENGTH, result.getSignalStrength());
 		insertResult.put(TEST_BATTERY, result.getBattery());
 		insertResult.put(TEST_REQUEST, result.getRequestSize());
+		insertResult.put(TEST_RTT, result.getRtt());
 
 		try {
 			db.insertOrThrow(TEST_TABLE, null, insertResult);
@@ -147,6 +150,7 @@ public class DBAdapter {
 				+ TEST_SIGNAL_STRENGTH + " INTEGER," + TEST_BATTERY
 				+ " INTEGER, " 
 				+ TEST_REQUEST+ " INTEGER, " 
+				+ TEST_RTT+ " INTEGER, " 
 				+ " PRIMARY KEY( " + TEST_TIMESTAMP + " ) )";
 
 		@Override
